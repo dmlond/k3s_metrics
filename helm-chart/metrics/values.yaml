@@ -1,0 +1,6 @@
+name: rpi
+url: http://0.0.0.0:9090
+
+prometheus:
+  image: prom/prometheus
+  tag: v2.27.0

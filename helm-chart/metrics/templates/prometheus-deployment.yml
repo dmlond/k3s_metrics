@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "fullname" . }}-metrics
+  name: {{ include "fullname" . }}-prometheus
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+      app.kubernetes.io/name: prometheus
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ include "fullname" . }}-viewer
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: {{ include "fullname" . }}-prometheus
+          args:
+          - --config.file=/etc/prometheus/prometheus.yml
+          - --web.external-url={{ .Values.url }}
+          image: {{ .Values.prometheus.image }}:{{ .Values.prometheus.tag }}
+          ports:
+            - containerPort: 9090
+              name: prom-port
+          volumeMounts:
+          - mountPath: /etc/prometheus/prometheus.yml
+            name: {{ include "fullname" . }}-prom-config
+            subPath: prometheus.yml
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /status
+              port: 9090
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+      volumes:
+        - name: {{ include "fullname" . }}-prom-config
+          secret:
+            secretName: {{ include "fullname" . }}-prom-config
+      restartPolicy: Always
