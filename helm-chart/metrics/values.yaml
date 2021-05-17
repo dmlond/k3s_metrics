@@ -4,3 +4,9 @@ url: http://0.0.0.0:9090
 prometheus:
   image: prom/prometheus
   tag: v2.27.0
+  externalPort: 30283
+
+alertmanager:
+  image: prom/alertmanager
+  tag: v0.21.0
+  externalPort: 30284

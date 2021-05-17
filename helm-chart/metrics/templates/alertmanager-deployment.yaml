@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "fullname" . }}-metrics
+  name: {{ include "fullname" . }}-alertmanager
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        app.kubernetes.io/name: alertmanager
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ include "fullname" . }}-alertmanager
+          args:
+            - --config.file=/etc/alertmanager/alertmanager.yml
+            - --web.external-url={{ .Values.url }}:{{ .Values.alertmanager.externalPort }}
+          image: {{ .Values.alertmanager.image }}:{{ .Values.alertmanager.tag }}
+          ports:
+            - containerPort: 9093
+              name: alertm-port
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: '/api/v1/status'
+              port: 9093
+              scheme: 'HTTP'
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          volumeMounts:
+            - mountPath: /etc/alertmanager
+              name: {{ include "fullname" . }}-alertmanager-config
+      volumes:
+        - name: {{ include "fullname" . }}-alertmanager-config
+          secret:
+            secretName: {{ include "fullname" . }}-alertmanager-config
+      restartPolicy: Always

@@ -26,7 +26,7 @@ spec:
         - name: {{ include "fullname" . }}-prometheus
           args:
           - --config.file=/etc/prometheus/prometheus.yml
-          - --web.external-url={{ .Values.url }}
+          - --web.external-url={{ .Values.url }}:{{ .Values.prometheus.externalPort }}
           image: {{ .Values.prometheus.image }}:{{ .Values.prometheus.tag }}
           ports:
             - containerPort: 9090
