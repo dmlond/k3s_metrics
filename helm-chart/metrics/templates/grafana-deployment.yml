@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "fullname" . }}-metrics
+  name: {{ include "fullname" . }}-grafana
+spec:
+  selector:
+    matchLabels:
+      helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ include "fullname" . }}-grafana
+          image: {{ .Values.grafana.image }}:{{ .Values.grafana.tag }}
+          ports:
+            - containerPort: 3000
+              name: grafana-port
+      restartPolicy: Always

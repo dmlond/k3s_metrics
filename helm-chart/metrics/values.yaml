@@ -10,3 +10,8 @@ alertmanager:
   image: prom/alertmanager
   tag: v0.21.0
   externalPort: 30284
+
+grafana:
+  image: grafana/grafana
+  tag: 7.5.6
+  externalPort: 30285
