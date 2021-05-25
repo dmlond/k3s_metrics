@@ -41,8 +41,13 @@ spec:
           volumeMounts:
             - mountPath: /etc/alertmanager
               name: {{ include "fullname" . }}-alertmanager-config
+            - mountPath: /alertmanager
+              name: {{ include "fullname" . }}-alertmanager-data
       volumes:
         - name: {{ include "fullname" . }}-alertmanager-config
           secret:
             secretName: {{ include "fullname" . }}-alertmanager-config
+        - name: {{ include "fullname" . }}-alertmanager-data
+          persistentVolumeClaim:
+            claimName: {{ include "fullname" . }}-alertmanager-data-pvc
       restartPolicy: Always

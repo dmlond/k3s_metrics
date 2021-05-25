@@ -5,13 +5,17 @@ prometheus:
   image: prom/prometheus
   tag: v2.27.0
   externalPort: 30283
+  dataStorageSize: 2.5Gi
+  rulesStorageSize: 2.5Gi
 
 alertmanager:
   image: prom/alertmanager
   tag: v0.21.0
   externalPort: 30284
+  dataStorageSize: 2.5Gi
 
 grafana:
   image: grafana/grafana
   tag: 7.5.6
   externalPort: 30285
+  dataStorageSize: 5Gi

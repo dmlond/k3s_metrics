@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "fullname" . }}-prom-config
+  name: {{ include "fullname" . }}-prometheus-config
   labels:
     helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
     app.kubernetes.io/name: prometheus

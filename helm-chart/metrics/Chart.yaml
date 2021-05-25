@@ -1,6 +1,6 @@
 apiVersion: v2
-appVersion: 0.0.3
+appVersion: 0.0.4
 description: Prometheus, Alertmanager and PushGateway for RPI K3s
 name: metrics
 type: application
-version: 0.0.3
+version: 0.0.4

@@ -23,7 +23,14 @@ spec:
       containers:
         - name: {{ include "fullname" . }}-grafana
           image: {{ .Values.grafana.image }}:{{ .Values.grafana.tag }}
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: {{ include "fullname" . }}-grafana-data
           ports:
             - containerPort: 3000
               name: grafana-port
       restartPolicy: Always
+      volumes:
+        - name: {{ include "fullname" . }}-grafana-data
+          persistentVolumeClaim:
+            claimName: {{ include "fullname" . }}-grafana-pvc
