@@ -1,0 +1,32 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    "helm.sh/resource-policy": keep
+  name: {{ include "fullname" . }}-mosquitto-data-pvc
+  labels:
+    app.kubernetes.io/name: mosquitto
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.mosquitto.dataStorageSize }}
+  storageClassName: local-path
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    "helm.sh/resource-policy": keep
+  name: {{ include "fullname" . }}-mosquitto-auth-pvc
+  labels:
+    app.kubernetes.io/name: mosquitto
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.mosquitto.authStorageSize }}
+  storageClassName: local-path

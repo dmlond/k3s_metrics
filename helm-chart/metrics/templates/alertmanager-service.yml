@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: {{ include "fullname" . }}-alertmanager
   labels:
-    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
@@ -15,6 +14,5 @@ spec:
       targetPort: 9093
       nodePort: {{ .Values.alertmanager.externalPort }}
   selector:
-    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: {{ .Release.Name }}

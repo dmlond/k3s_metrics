@@ -19,3 +19,10 @@ grafana:
   tag: 7.5.6
   externalPort: 30285
   dataStorageSize: 5Gi
+
+mosquitto:
+  image: eclipse-mosquitto
+  tag: 2.0.10
+  externalPort: 30286
+  dataStorageSize: 2.5Gi
+  authStorageSize: 100Mi

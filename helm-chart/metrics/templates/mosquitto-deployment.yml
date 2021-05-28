@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: mosquitto
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "fullname" . }}-metrics
+  name: {{ include "fullname" . }}-mosquitto
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mosquitto
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mosquitto
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      initContainers:
+        - name: {{ include "fullname" . }}-mosquitto-init
+          image: {{ .Values.mosquitto.image }}:{{ .Values.mosquitto.tag }}
+          command:
+            - touch
+            - /mosquitto/auth/password_file
+          volumeMounts:
+            - mountPath: /mosquitto/auth
+              name: {{ include "fullname" . }}-mosquitto-auth
+      containers:
+        - name: {{ include "fullname" . }}-mosquitto
+          image: {{ .Values.mosquitto.image }}:{{ .Values.mosquitto.tag }}
+          volumeMounts:
+            - mountPath: /mosquitto/data
+              name: {{ include "fullname" . }}-mosquitto-data
+            - mountPath: /mosquitto/config/mosquitto.conf
+              name: {{ include "fullname" . }}-mosquitto-config
+              subPath: mosquitto.conf
+            - mountPath: /mosquitto/auth
+              name: {{ include "fullname" . }}-mosquitto-auth
+          ports:
+            - containerPort: 1883
+              name: mosquitto-port
+      restartPolicy: Always
+      volumes:
+        - name: {{ include "fullname" . }}-mosquitto-config
+          secret:
+            secretName: {{ include "fullname" . }}-mosquitto-config
+        - name: {{ include "fullname" . }}-mosquitto-data
+          persistentVolumeClaim:
+            claimName: {{ include "fullname" . }}-mosquitto-data-pvc
+        - name: {{ include "fullname" . }}-mosquitto-auth
+          persistentVolumeClaim:
+            claimName: {{ include "fullname" . }}-mosquitto-auth-pvc

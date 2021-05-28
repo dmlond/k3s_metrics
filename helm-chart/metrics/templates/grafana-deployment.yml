@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: {{ .Release.Name }}
     app: {{ include "fullname" . }}-metrics
@@ -10,13 +9,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
       app.kubernetes.io/name: grafana
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
         app.kubernetes.io/name: grafana
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
