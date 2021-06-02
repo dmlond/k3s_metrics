@@ -21,7 +21,7 @@ spec:
         - name: {{ include "fullname" . }}-alertmanager
           args:
             - --config.file=/etc/alertmanager/alertmanager.yml
-            - --web.external-url={{ .Values.url }}:{{ .Values.alertmanager.externalPort }}
+            - --web.external-url=http://{{ .Values.alertmanager.url }}
           image: {{ .Values.alertmanager.image }}:{{ .Values.alertmanager.tag }}
           ports:
             - containerPort: 9093
@@ -29,7 +29,7 @@ spec:
           livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: '/api/v1/status'
+              path: '/'
               port: 9093
               scheme: 'HTTP'
             periodSeconds: 10

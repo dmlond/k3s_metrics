@@ -1,24 +1,26 @@
-name: rpi
-url: http://0.0.0.0:9090
+name: iot
 
 prometheus:
   image: prom/prometheus
-  tag: v2.27.0
+  tag: v2.27.1
   externalPort: 30283
   dataStorageSize: 2.5Gi
   rulesStorageSize: 2.5Gi
+  url: prometheus.iot
 
 alertmanager:
   image: prom/alertmanager
-  tag: v0.21.0
+  tag: v0.22.1
   externalPort: 30284
   dataStorageSize: 2.5Gi
+  url: alertmanager.iot
 
 grafana:
   image: grafana/grafana
-  tag: 7.5.6
+  tag: 7.5.7
   externalPort: 30285
   dataStorageSize: 5Gi
+  url: dashboard.iot
 
 mosquitto:
   image: eclipse-mosquitto
@@ -26,3 +28,4 @@ mosquitto:
   externalPort: 30286
   dataStorageSize: 2.5Gi
   authStorageSize: 100Mi
+  url: mqtt.iot

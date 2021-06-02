@@ -23,7 +23,7 @@ spec:
         - name: {{ include "fullname" . }}-prometheus
           args:
           - --config.file=/etc/prometheus/prometheus.yml
-          - --web.external-url={{ .Values.url }}:{{ .Values.prometheus.externalPort }}
+          - --web.external-url=http://{{ .Values.prometheus.url }}
           image: {{ .Values.prometheus.image }}:{{ .Values.prometheus.tag }}
           ports:
             - containerPort: 9090
@@ -39,7 +39,7 @@ spec:
           livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: /status
+              path: /
               port: 9090
               scheme: HTTP
             periodSeconds: 10

@@ -1,6 +1,6 @@
 apiVersion: v2
-appVersion: 0.0.5
+appVersion: 0.0.6
 description: Mosquitto MQTT, Prometheus, Alertmanager and PushGateway for RPI K3s
 name: metrics
 type: application
-version: 0.0.5
+version: 0.0.6

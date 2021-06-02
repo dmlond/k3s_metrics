@@ -6,13 +6,10 @@ metadata:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
-  type: NodePort
   ports:
     - name: alertmanager-port
       port: 9093
       protocol: TCP
-      targetPort: 9093
-      nodePort: {{ .Values.alertmanager.externalPort }}
   selector:
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/instance: {{ .Release.Name }}
