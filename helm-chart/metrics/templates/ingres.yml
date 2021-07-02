@@ -36,13 +36,3 @@ spec:
             name: {{ include "fullname" . }}-grafana
             port:
               number: 3000
-  - host: {{ .Values.mosquitto.url }}
-    http:
-      paths:
-      - path: /
-        pathType: Exact
-        backend:
-          service:
-            name: {{ include "fullname" . }}-mosquitto
-            port:
-              number: 1883

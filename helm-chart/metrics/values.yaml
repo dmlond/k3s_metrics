@@ -25,7 +25,6 @@ grafana:
 mosquitto:
   image: eclipse-mosquitto
   tag: 2.0.10
-  externalPort: 30286
+  externalPort: 31883
   dataStorageSize: 2.5Gi
   authStorageSize: 100Mi
-  url: mqtt.iot

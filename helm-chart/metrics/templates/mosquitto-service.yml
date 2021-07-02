@@ -6,11 +6,13 @@ metadata:
     app.kubernetes.io/name: mosquitto
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
+  type: NodePort
   ports:
     - name: mosquitto-port
       port: 1883
       protocol: TCP
       targetPort: 1883
+      nodePort: {{ .Values.mosquitto.externalPort }}
   selector:
     app.kubernetes.io/name: mosquitto
     app.kubernetes.io/instance: {{ .Release.Name }}
